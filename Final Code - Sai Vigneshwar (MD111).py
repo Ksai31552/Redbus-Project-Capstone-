@@ -189,32 +189,15 @@ def process_base_url(base_url):
     finally:
         driver.quit()
 
-def main():
-    all_detailed_data = []
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(process_base_url, url) for url in BASE_URLS]
-        for future in as_completed(futures):
-            all_detailed_data.extend(future.result())
+# def main():
+all_detailed_data = []
+with ThreadPoolExecutor(max_workers=4) as executor:
+    futures = [executor.submit(process_base_url, url) for url in BASE_URLS]
+    for future in as_completed(futures):
+        all_detailed_data.extend(future.result())
+
+detailed_df = pd.DataFrame(all_detailed_data)
+logging.info(f"Total detailed records: {len(detailed_df)}")
+detailed_df.to_csv("C:/Users/Sai.Vigneshwar/Desktop/detailed_routes_data.csv")
     
-    detailed_df = pd.DataFrame(all_detailed_data)
-    logging.info(f"Total detailed records: {len(detailed_df)}")
-
-    # Save DataFrame to SQL database
-    engine = create_engine('sqlite:///buses_data.db')  # SQLite database; change to your desired database
-    detailed_df.to_sql('bus_routes', con=engine, if_exists='replace', index=False)
-    logging.info("Data extraction completed and saved to the SQL database")
-
-if __name__ == "__main__":
-    main()
     
-import pandas as pd
-from sqlalchemy import create_engine
-
-# Create an engine to connect to the SQLite database
-engine = create_engine('sqlite:///buses_data.db')
-
-# Query the database and load the data into a DataFrame
-df = pd.read_sql('SELECT * FROM bus_routes', con=engine)
-
-# Display the DataFrame
-print(df)
