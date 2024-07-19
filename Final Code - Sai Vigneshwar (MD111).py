@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 19 15:20:38 2024
-
-@author: Sai.Vigneshwar
-"""
-
 import time
 import logging
 from selenium import webdriver
@@ -198,9 +191,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-###################################
-
-# Re-printing the data in the kernel
+#Reprinting Data in Kernal
 import pandas as pd
 from sqlalchemy import create_engine
 
